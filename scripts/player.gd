@@ -43,8 +43,7 @@ func get_tile_at_mouse() -> Node:
 			return tile_distance <= reach and node.global_position.distance_to(mouse_pos) < (TILE_SIZE * 1.4)
 	)
 
-	# Check if the array is empty before accessing it
 	if tiles.size() > 0:
 		return tiles[0]
 	else:
-		return null  # No tile found
+		return null
