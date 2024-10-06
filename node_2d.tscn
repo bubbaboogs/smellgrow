@@ -6,7 +6,9 @@
 [ext_resource type="Script" path="res://scripts/terrain_generation.gd" id="4_xj770"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_wnf7e"]
-noise_type = 3
+noise_type = 2
+frequency = 1.0
+cellular_jitter = 2.0
 
 [node name="Node2D" type="Node2D"]
 
@@ -16,11 +18,13 @@ speed = 200
 jump_speed = -800
 friction = 0.119
 
+[node name="Terrain" type="Node2D" parent="." node_paths=PackedStringArray("player", "tilemap")]
+script = ExtResource("4_xj770")
+player = NodePath("../Character")
+new_chunk_load = true
+tilemap = NodePath("../TileMapLayer")
+noise = SubResource("FastNoiseLite_wnf7e")
+
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 scale = Vector2(2, 2)
 tile_set = ExtResource("4_vift2")
-
-[node name="Terrain" type="Node2D" parent="." node_paths=PackedStringArray("tilemap")]
-script = ExtResource("4_xj770")
-tilemap = NodePath("../TileMapLayer")
-noise = SubResource("FastNoiseLite_wnf7e")
