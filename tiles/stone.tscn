@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://bak531gn7bgyd"]
+
+[ext_resource type="Script" path="res://tiles/dirt_tile.gd" id="1_tmyli"]
+[ext_resource type="Texture2D" uid="uid://bfllnvynd2i5t" path="res://sprites/tile_sprites/stone.png" id="2_8ij2c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6w52b"]
+size = Vector2(16, 16)
+
+[node name="Stone" type="StaticBody2D" groups=["tiles"]]
+script = ExtResource("1_tmyli")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_8ij2c")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+process_mode = 4
+shape = SubResource("RectangleShape2D_6w52b")

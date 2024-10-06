@@ -16,11 +16,13 @@ const TILE_SIZE = 16  # Each tile is 16x16 pixels
 @export var player: CharacterBody2D
 @export var tilemap: TileMapLayer
 @export var noise := FastNoiseLite.new()
+var last_player_pos: Vector2 = Vector2(0, 0)
 
 # Tile IDs in TileMap
 const TILE_AIR = -1
 const TILE_GRASS = 1
 const TILE_DIRT = 2
+const TILE_STONE = 3
 
 const SOURCE_ID = 0
 
@@ -35,7 +37,9 @@ func _ready():
 func _process(delta: float):
 	if(new_chunk_load):
 		var player_position = player.position
-		generate_terrain_around_player(player_position)
+		if Vector2i(roundi(last_player_pos.x), roundi(last_player_pos.y)) != Vector2i(roundi(player_position.x), roundi(player_position.y)):
+			generate_terrain_around_player(player_position)
+			last_player_pos = player_position
 
 
 func generate_terrain():
@@ -45,10 +49,12 @@ func generate_terrain():
 		var height = TERRAIN_HEIGHT + int(noise.get_noise_2d(x / SCALE, 0) * 10)
 		
 		for y in range(WORLD_HEIGHT):
-			if y == height:
-				tilemap.set_cell(Vector2i(x, y), SOURCE_ID, Vector2i(0, 0), TILE_GRASS)
-			elif y > height and y > height - DIRT_LAYER:
+			if y > height + DIRT_LAYER:
+				tilemap.set_cell(Vector2i(x, y), SOURCE_ID, Vector2i(0, 0), TILE_STONE)
+			elif y > height:
 				tilemap.set_cell(Vector2i(x, y), SOURCE_ID, Vector2i(0, 0), TILE_DIRT)
+			elif y == height:
+				tilemap.set_cell(Vector2i(x, y), SOURCE_ID, Vector2i(0, 0), TILE_GRASS)
 			else:
 				tilemap.set_cell(Vector2i(x, y), TILE_AIR)
 
@@ -58,11 +64,13 @@ func generate_chunk(chunk_pos: Vector2i):
 	
 	for x in range(start_x, start_x + CHUNK_SIZE):
 		var height = TERRAIN_HEIGHT + int(noise.get_noise_2d(x / SCALE, 0) * 10)
-		for y in range(start_y, start_y + CHUNK_SIZE):
-			if y == height:
-				tilemap.set_cell(Vector2i(x, y), SOURCE_ID, Vector2i(0, 0), TILE_GRASS)
-			elif y > height and y > height - DIRT_LAYER:
+		for y in range(WORLD_HEIGHT):
+			if y > height + DIRT_LAYER:
+				tilemap.set_cell(Vector2i(x, y), SOURCE_ID, Vector2i(0, 0), TILE_STONE)
+			elif y > height:
 				tilemap.set_cell(Vector2i(x, y), SOURCE_ID, Vector2i(0, 0), TILE_DIRT)
+			elif y == height:
+				tilemap.set_cell(Vector2i(x, y), SOURCE_ID, Vector2i(0, 0), TILE_GRASS)
 			else:
 				tilemap.set_cell(Vector2i(x, y), TILE_AIR)
 

@@ -20,7 +20,6 @@ friction = 0.119
 
 [node name="Terrain" type="Node2D" parent="." node_paths=PackedStringArray("player", "tilemap")]
 script = ExtResource("4_xj770")
-new_chunk_load = true
 player = NodePath("../Character")
 tilemap = NodePath("../TileMapLayer")
 noise = SubResource("FastNoiseLite_wnf7e")
