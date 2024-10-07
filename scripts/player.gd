@@ -12,6 +12,12 @@ func _physics_process(delta: float) -> void:
 	velocity.y += gravity * delta
 	var dir = Input.get_axis("left", "right")
 	if dir != 0:
+		if(dir > 0):
+			var sprite: Sprite2D = get_child(0)
+			sprite.flip_h = false
+		else:
+			var sprite: Sprite2D = get_child(0)
+			sprite.flip_h = true
 		velocity.x = lerp(velocity.x, dir * speed, acceleration)
 	else:
 		velocity.x = lerp(velocity.x, 0.0, friction)
